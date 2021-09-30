@@ -47,14 +47,26 @@ public class SberMetalHistoryPharser {
     private void OpenHistoryRatePopupWindow() {
 		
 		System.setProperty("webdriver.chrome.driver",
-				"D:\\Programming\\Projects\\Java\\Trader\\Java\\RatePharser\\chromedriver_92_0_4515_107\\chromedriver.exe");
+				"D:\\Programming\\Projects\\Java\\Trader\\Java\\RatePharser\\chromedriver_94_0_4606_61\\chromedriver.exe");
 		driver = new ChromeDriver();
-
+		driver.manage().window().maximize();
 		
 		driver.get("https://www.sberbank.ru/ru/quotes/metalbeznal");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
 				
+		
+		//submit region and close popup window
+		try {
+				webElement = driver.findElement(By.className("kitt-region__accept"));
+				webElement.click();
+		}
+		
+		catch(Exception e) {
+			
+		}
+		
+		
 		//accept Coockie and close the popup window
 		webElement = driver.findElement(By.xpath("/html/body/div[1]/div[4]/div/div/div/button"));
 		webElement.click();
@@ -89,14 +101,24 @@ public class SberMetalHistoryPharser {
     
     private void SwitchMetal() {
     	
-    		webElement = driver.findElement(By.xpath("/html/body/div[4]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]"));
-		webElement.sendKeys(Keys.ARROW_DOWN);
+    		Actions actions = new Actions(driver);	
+    	    	webElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
+    	    	
+    	    
+    	    	
+    	    	
+    	    	actions.click(webElement).sendKeys(Keys.ARROW_DOWN).build().perform();
+    		
+    	    	//Old version to switch metal
+    	    	//webElement.sendKeys(Keys.ARROW_DOWN);
     }
     
     private String getMetalName() {
     	
-    		WebElement metalName = driver.findElement(By.xpath("/html/body/div[4]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]"));
+    		WebElement metalName = driver.findElement(By.xpath("/html/body/div[5]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
     		return metalName.getText();
+    		
+    		    		   		
     }
 	
     
@@ -205,7 +227,16 @@ public class SberMetalHistoryPharser {
 		ArrayList<WebElement> ratePerTime = new ArrayList<WebElement>();
 		WebElement rateHistoryTable;
 		
-		rateHistoryTable = driver.findElement(By.xpath("/html/body/div[4]/div/div/div/div/div/div/div/div/div[2]/div/div/div[1]/table"));
+		try {
+				rateHistoryTable = driver.findElement(By.xpath("/html/body/div[6]/div/div/div/div/div/div/div/div/div[2]/div/div/div[1]/table"));
+													  
+		}
+		
+		catch (Exception e) {
+		
+			rateHistoryTable = driver.findElement(By.xpath("/html/body/div[5]/div/div/div/div/div/div/div/div/div[2]/div/div/div[1]/table"));
+			
+		}
 		ratePerTime = (ArrayList<WebElement>) rateHistoryTable.findElements(By.className("history-table__list-wrap"));
 		
 				
