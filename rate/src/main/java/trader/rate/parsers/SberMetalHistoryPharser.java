@@ -52,7 +52,7 @@ public class SberMetalHistoryPharser {
 		driver.manage().window().maximize();
 		
 		driver.get("https://www.sberbank.ru/ru/quotes/metalbeznal");
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
 				
 		
@@ -88,7 +88,7 @@ public class SberMetalHistoryPharser {
     		//Get date calendar field	
     		webElement = driver.findElement(By.name("RatesForm_date-in-history"));
     		//Wait for page load    		
-    		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     		//Clear Calendar input field before paste the date
     		actions.doubleClick(webElement).sendKeys(webElement, Keys.DELETE).build().perform();
     		
@@ -102,8 +102,12 @@ public class SberMetalHistoryPharser {
     private void SwitchMetal() {
     	
     		Actions actions = new Actions(driver);	
-    	    	webElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
-    	    	
+    	    	try {
+    	    		webElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
+    	    	}											
+    	    	catch (Exception e){
+    	    		webElement = driver.findElement(By.xpath("/html/body/div[6]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
+    	    	}
     	    
     	    	
     	    	
@@ -115,7 +119,15 @@ public class SberMetalHistoryPharser {
     
     private String getMetalName() {
     	
-    		WebElement metalName = driver.findElement(By.xpath("/html/body/div[5]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
+    	WebElement metalName;
+    	
+    	try {	
+    		 metalName = driver.findElement(By.xpath("/html/body/div[5]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
+    	}
+    	catch(Exception e) {
+    		 metalName = driver.findElement(By.xpath("/html/body/div[6]/div/div/div/div/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[1]"));
+    	}
+    	
     		return metalName.getText();
     		
     		    		   		
